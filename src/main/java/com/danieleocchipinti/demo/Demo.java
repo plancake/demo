@@ -1,3 +1,5 @@
+package com.danieleocchipinti.demo;
+
 import org.springframework.boot.*;
 import org.springframework.boot.autoconfigure.*;
 import org.springframework.stereotype.*;
@@ -9,7 +11,7 @@ public class Demo {
 
     @RequestMapping("/")
     String home() {
-        return "Hello World!";
+        return "Hello World 2!";
     }
 
     public static void main(String[] args) throws Exception {
