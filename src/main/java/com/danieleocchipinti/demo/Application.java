@@ -11,17 +11,11 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-@RestController
 @SpringBootApplication // same as @Configuration @EnableAutoConfiguration @ComponentScan
 public class Application {
 	
 	@Value("${spring.profiles.active}")
 	private String activeProfile;
-
-    @RequestMapping("/")
-    String home() {
-        return String.format("Hello World from profile %s!", this.activeProfile);
-    }
 
     public static void main(String[] args) throws Exception {
     	
