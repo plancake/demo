@@ -29,6 +29,8 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.danieleocchipinti.demo.entity.Document;
 import com.danieleocchipinti.demo.repository.DocumentRepository;
 
+import com.danieleocchipinti.demo.lib.Utils;
+
 @Controller("HttpSellerAccount")
 @RequestMapping(value="/account/seller")
 public class SellerAccount {
@@ -58,17 +60,19 @@ public class SellerAccount {
 		if (!file.isEmpty()) {
 			
 			filename = file.getOriginalFilename();
-			
+
 			if (filename.contains("/")) {
 				redirectAttributes.addFlashAttribute("errorMessage", "Folder separators not allowed");
 				return "redirect:/account/seller";
 			}			
 			
 			try {
-				BufferedOutputStream stream = new BufferedOutputStream(
-						new FileOutputStream(new File(UPLOADED_FILES_ROOT_DIR + "/" + filename)));
-                FileCopyUtils.copy(file.getInputStream(), stream);
-				stream.close();
+				
+				if (!Utils.is_pdf(file.getBytes())) {
+					redirectAttributes.addFlashAttribute("errorMessage", "Only PDF files are accepted.");
+					return "redirect:/account/seller";					
+				}
+				
 				successfulUpload = true;
 				redirectAttributes.addFlashAttribute("successMessage",
 						"You successfully uploaded " + filename + "!");
@@ -93,32 +97,5 @@ public class SellerAccount {
 
 		return "redirect:/account/seller";
 	}
-	
-	@RequestMapping(method = RequestMethod.GET, value = "/document/{document_id}.pdf", produces = "application/pdf")
-	@ResponseBody
-	public byte[] getDocument(@PathVariable("document_id") int documentId, HttpServletResponse response) {
-
-
-	      Document document = documentRepository.findById(documentId);
-	      
-	      // FileCopyUtils.copy(document.getContent(), response.getOutputStream());
-    
-	      /*
-	      response.setHeader(
-			  "Content-disposition", 
-			  String.format("attachment; filename=\"%s\"", document.getFilename())
-	      );
-	      */
-		  // response.setContentType("application/pdf");
-	      
-	      // response.setHeader("Content-Type", "application/pdf");
-	    		  
-	      // response.flushBuffer();
-	      
-	      // return response;
-	      
-	      return document.getContent();
-	}
-
 
 }
