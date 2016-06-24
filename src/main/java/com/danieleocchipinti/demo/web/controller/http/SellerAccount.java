@@ -31,10 +31,6 @@ public class SellerAccount {
 	public String provideUploadInfo(Model model) {
 		
 		File rootFolder = new File(UPLOADED_FILES_ROOT_DIR);
-		
-		List<String> fileNames = Arrays.stream(rootFolder.listFiles())
-			.map(f -> f.getName())
-			.collect(Collectors.toList());
 
 		model.addAttribute("files",
 			Arrays.stream(rootFolder.listFiles())
@@ -52,8 +48,8 @@ public class SellerAccount {
 								   RedirectAttributes redirectAttributes) {
 		
 		if (name.contains("/")) {
-			redirectAttributes.addFlashAttribute("message", "Folder separators not allowed");
-			return "redirect:/";
+			redirectAttributes.addFlashAttribute("errorMessage", "Folder separators not allowed");
+			return "redirect:/account/seller";
 		}
 
 		if (!file.isEmpty()) {
@@ -62,20 +58,20 @@ public class SellerAccount {
 						new FileOutputStream(new File(UPLOADED_FILES_ROOT_DIR + "/" + name)));
                 FileCopyUtils.copy(file.getInputStream(), stream);
 				stream.close();
-				redirectAttributes.addFlashAttribute("message",
+				redirectAttributes.addFlashAttribute("successMessage",
 						"You successfully uploaded " + name + "!");
 			}
 			catch (Exception e) {
-				redirectAttributes.addFlashAttribute("message",
+				redirectAttributes.addFlashAttribute("errorMessage",
 						"You failed to upload " + name + " => " + e.getMessage());
 			}
 		}
 		else {
-			redirectAttributes.addFlashAttribute("message",
+			redirectAttributes.addFlashAttribute("errorMessage",
 					"You failed to upload " + name + " because the file was empty");
 		}
 
-		return "redirect:/";
+		return "redirect:/account/seller";
 	}
 
 

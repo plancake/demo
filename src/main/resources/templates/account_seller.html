@@ -9,16 +9,19 @@
     </head>
 
 	<body>
-	
-		<div th:if="${message}">
-			<h2 th:text="${message}"/>
-		</div>	
+		
+        <div th:if="${errorMessage}" class="bg-danger">
+            <h2 th:text="${errorMessage}"/>
+        </div>
+        <div th:if="${successMessage}" class="bg-success">
+            <h2 th:text="${successMessage}"/>
+        </div>
 	
 		<div>
 			<form method="POST" enctype="multipart/form-data" th:action="@{/account/seller}">
 				<table>
 					<tr><td>File to upload:</td><td><input type="file" name="file" /></td></tr>
-					<tr><td>Name:</td><td><input type="text" name="name" /></td></tr>
+					<tr><td>Name:</td><td><input type="text" name="name" required="required" /></td></tr>
 					<tr><td></td><td><input type="submit" value="Upload" /></td></tr>
 				</table>
 				
