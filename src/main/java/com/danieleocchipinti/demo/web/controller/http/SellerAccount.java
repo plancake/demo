@@ -43,32 +43,35 @@ public class SellerAccount {
 	}
 
 	@RequestMapping(method = RequestMethod.POST, value = "")
-	public String handleFileUpload(@RequestParam("name") String name,
-								   @RequestParam("file") MultipartFile file,
-								   RedirectAttributes redirectAttributes) {
+	public String handleFileUpload(@RequestParam("file") MultipartFile file, RedirectAttributes redirectAttributes) {
 		
-		if (name.contains("/")) {
-			redirectAttributes.addFlashAttribute("errorMessage", "Folder separators not allowed");
-			return "redirect:/account/seller";
-		}
+		String filename = "";
 
 		if (!file.isEmpty()) {
+			
+			filename = file.getOriginalFilename();
+			
+			if (filename.contains("/")) {
+				redirectAttributes.addFlashAttribute("errorMessage", "Folder separators not allowed");
+				return "redirect:/account/seller";
+			}			
+			
 			try {
 				BufferedOutputStream stream = new BufferedOutputStream(
-						new FileOutputStream(new File(UPLOADED_FILES_ROOT_DIR + "/" + name)));
+						new FileOutputStream(new File(UPLOADED_FILES_ROOT_DIR + "/" + filename)));
                 FileCopyUtils.copy(file.getInputStream(), stream);
 				stream.close();
 				redirectAttributes.addFlashAttribute("successMessage",
-						"You successfully uploaded " + name + "!");
+						"You successfully uploaded " + filename + "!");
 			}
 			catch (Exception e) {
 				redirectAttributes.addFlashAttribute("errorMessage",
-						"You failed to upload " + name + " => " + e.getMessage());
+						"You failed to upload " + filename + " => " + e.getMessage());
 			}
 		}
 		else {
 			redirectAttributes.addFlashAttribute("errorMessage",
-					"You failed to upload " + name + " because the file was empty");
+					"You failed to upload " + filename + " because the file was empty");
 		}
 
 		return "redirect:/account/seller";
