@@ -1,23 +1,33 @@
 package com.danieleocchipinti.demo.web.controller.http;
 
 
+import java.awt.PageAttributes.MediaType;
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import javax.servlet.http.HttpServletResponse;
+
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.FileCopyUtils;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import com.danieleocchipinti.demo.entity.Document;
+import com.danieleocchipinti.demo.repository.DocumentRepository;
 
 @Controller("HttpSellerAccount")
 @RequestMapping(value="/account/seller")
@@ -27,17 +37,13 @@ public class SellerAccount {
 
 	private static final String UPLOADED_FILES_ROOT_DIR = "/var/tmp";
 	
+	@Autowired
+	private DocumentRepository documentRepository;	
+	
 	@RequestMapping(method = RequestMethod.GET, value = "")
 	public String provideUploadInfo(Model model) {
-		
-		File rootFolder = new File(UPLOADED_FILES_ROOT_DIR);
 
-		model.addAttribute("files",
-			Arrays.stream(rootFolder.listFiles())
-					.sorted(Comparator.comparingLong(f -> -1 * f.lastModified()))
-					.map(f -> f.getName())
-					.collect(Collectors.toList())
-		);
+		model.addAttribute("documents", documentRepository.findAllByOrderByUploadedAtDesc());
 
 		return "account_seller";
 	}
@@ -46,6 +52,8 @@ public class SellerAccount {
 	public String handleFileUpload(@RequestParam("file") MultipartFile file, RedirectAttributes redirectAttributes) {
 		
 		String filename = "";
+		
+		boolean successfulUpload = false;
 
 		if (!file.isEmpty()) {
 			
@@ -61,6 +69,7 @@ public class SellerAccount {
 						new FileOutputStream(new File(UPLOADED_FILES_ROOT_DIR + "/" + filename)));
                 FileCopyUtils.copy(file.getInputStream(), stream);
 				stream.close();
+				successfulUpload = true;
 				redirectAttributes.addFlashAttribute("successMessage",
 						"You successfully uploaded " + filename + "!");
 			}
@@ -73,8 +82,42 @@ public class SellerAccount {
 			redirectAttributes.addFlashAttribute("errorMessage",
 					"You failed to upload " + filename + " because the file was empty");
 		}
+		
+		if (successfulUpload) {
+			try {
+				documentRepository.save(new Document(filename, file.getBytes()));
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
 
 		return "redirect:/account/seller";
+	}
+	
+	@RequestMapping(method = RequestMethod.GET, value = "/document/{document_id}.pdf", produces = "application/pdf")
+	@ResponseBody
+	public byte[] getDocument(@PathVariable("document_id") int documentId, HttpServletResponse response) {
+
+
+	      Document document = documentRepository.findById(documentId);
+	      
+	      // FileCopyUtils.copy(document.getContent(), response.getOutputStream());
+    
+	      /*
+	      response.setHeader(
+			  "Content-disposition", 
+			  String.format("attachment; filename=\"%s\"", document.getFilename())
+	      );
+	      */
+		  // response.setContentType("application/pdf");
+	      
+	      // response.setHeader("Content-Type", "application/pdf");
+	    		  
+	      // response.flushBuffer();
+	      
+	      // return response;
+	      
+	      return document.getContent();
 	}
 
 

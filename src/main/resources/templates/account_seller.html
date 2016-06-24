@@ -9,6 +9,8 @@
     </head>
 
 	<body>
+	
+		<a th:href="@{/account/seller/document/1.pdf}">click me</a>
 		
         <div th:if="${errorMessage}" class="bg-danger">
             <h2 th:text="${errorMessage}"/>
@@ -33,7 +35,13 @@
 	
 		<div>
 			<ul>
-				<li th:each="file : ${files}" th:text="${file}"></li>
+				<li th:each="document : ${documents}">
+					<span th:text="${document.id}"></span>
+					-				
+					<span th:text="${document.filename}"></span>
+					-
+					<a href="#"  th:text="${document.filename}"></a>
+				</li>
 			</ul>
 		</div>
 	
