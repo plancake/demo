@@ -1,5 +1,7 @@
 package com.danieleocchipinti.demo;
 
+import java.util.TimeZone;
+
 import javax.annotation.PostConstruct;
 
 import org.springframework.beans.factory.annotation.Value;
@@ -22,6 +24,8 @@ public class Application {
     	SpringApplication app = new SpringApplication(Application.class);
     	
     	app.setBannerMode(Banner.Mode.OFF);
+    	
+    	TimeZone.setDefault(TimeZone.getTimeZone("Etc/UTC"));
     	
         app.run(args);
     }
