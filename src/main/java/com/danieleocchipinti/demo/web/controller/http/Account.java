@@ -50,7 +50,7 @@ public class Account {
 	@ResponseBody
 	public byte[] getDocument(@PathVariable("document_id") int documentId, HttpServletResponse response) {
 
-	      Document document = documentRepository.findById(documentId);
+	      Document document = documentRepository.findOneById(documentId);
 	      
 	      return document.getContent();
 	}

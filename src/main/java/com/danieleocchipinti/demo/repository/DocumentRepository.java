@@ -12,5 +12,5 @@ public interface DocumentRepository extends CrudRepository<Document, Long> {
     
     public List<Document> findAllByOrderByUploadedAtDesc();
     
-    Document findById(int id);
+    Document findOneById(int id);
 }
