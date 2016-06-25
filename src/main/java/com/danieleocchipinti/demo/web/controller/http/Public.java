@@ -14,7 +14,7 @@ public class Public {
 
     @RequestMapping(value="/", method=RequestMethod.GET)
     public String publicHome(Model model) {
-        return "public_home";
+        return "redirect:/login";
     }
     
     @RequestMapping(value="/login", method=RequestMethod.GET)

@@ -16,9 +16,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.danieleocchipinti.demo.entity.Document;
-
+import com.danieleocchipinti.demo.lib.CurrentUser;
 import com.danieleocchipinti.demo.entity.Document;
 import com.danieleocchipinti.demo.repository.DocumentRepository;
+import com.danieleocchipinti.demo.repository.UserRepository;
 
 @Controller("HttpAccount")
 @RequestMapping(value="/account")
@@ -27,22 +28,25 @@ public class Account {
 	private static final Logger logger = Logger.getLogger(Account.class);	
 
 	@Autowired
-	private DocumentRepository documentRepository;		
+	private DocumentRepository documentRepository;
+	
+	@Autowired
+	private UserRepository userRepository;	
 	
     @RequestMapping(value="/home", method=RequestMethod.GET)
     public String accountHome(Model model) {
     	
-    	Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+    	CurrentUser currentUser = new CurrentUser(userRepository);
 
-        model.addAttribute("name", auth.getName());    	
+    	model.addAttribute("name", currentUser.getEmail());
     	
-    	logger.info(auth.getPrincipal().toString());
-    	logger.info(auth.getDetails().toString());
-    	logger.info(auth.getName());    	
-    	
-    	for (GrantedAuthority ga : auth.getAuthorities()) {
-    		logger.info(ga.getAuthority()); // ROLE_USER
+    	if (currentUser.isBuyer()) {
+    		return "redirect:/account/buyer";
     	}
+
+    	if (currentUser.isSeller()) {
+    		return "redirect:/account/seller";
+    	}    	
     	
         return "account_home";
     }

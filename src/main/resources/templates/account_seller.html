@@ -1,15 +1,10 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
-      
-    <head>
-        <title>Seller Account</title>
-		<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous" />        
-        
-    </head>
+<html xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+  layout:decorator="account_layout">
 
-	<body>
-	
+
+    <div class="content" layout:fragment="content">
         <div th:if="${errorMessage}" class="bg-danger">
             <h2 th:text="${errorMessage}"/>
         </div>
@@ -30,19 +25,8 @@
 				<input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
 			</form>
 		</div>
-	
-		<div>
-			<ul>
-				<li th:each="document : ${documents}">
-					<span th:text="${document.id}"></span>
-					-				
-					<span th:text="${document.filename}"></span>
-					-
-					<a href="#"  th:text="${document.filename}"></a>
-				</li>
-			</ul>
-		</div>
-	
-	</body>
-	
+    </div>
+    
 </html>
+      
+

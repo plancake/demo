@@ -14,6 +14,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 @EnableWebSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     
+	@Autowired
     private DataSource dataSource;
 	
     @Override
@@ -44,7 +45,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 			.dataSource(dataSource)
 			.passwordEncoder(new BCryptPasswordEncoder())
 			.usersByUsernameQuery(
-					"select email as username, password_hash, 1 from user where email=?")
+					"select email as username, password_hash as password, 1 from user where email=?")
 			.authoritiesByUsernameQuery(
 					"select email as username, role from user where email=?");    	
 	
