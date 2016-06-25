@@ -21,6 +21,16 @@
 					<label for="description">Description:</label>
 					<input type="text" name="description" id="description" required="required" />
 				</div>
+
+				<div class="form-group">
+					<label for="buyer_id">Customer/Buyer:</label>
+					
+				    <select class="form-control" name="buyer_id" id="buyer_id" required="required">
+					    <option disabled="disabled" selected="selected" value="">select buyer</option>
+					    <option th:each="buyer : ${buyers}" th:value="${buyer.id}" th:text="${buyer.email}"></option>
+				    </select>					
+				
+				</div>
 			
 				<div class="form-group">
 					<label for="fileToUpload">File to upload:</label>

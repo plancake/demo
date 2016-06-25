@@ -9,7 +9,9 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletResponse;
@@ -30,6 +32,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.danieleocchipinti.demo.entity.Deal;
 import com.danieleocchipinti.demo.entity.Document;
 import com.danieleocchipinti.demo.entity.User;
+import com.danieleocchipinti.demo.entity.UserRole;
 import com.danieleocchipinti.demo.repository.DealRepository;
 import com.danieleocchipinti.demo.repository.DocumentRepository;
 import com.danieleocchipinti.demo.repository.UserRepository;
@@ -54,15 +57,28 @@ public class SellerAccount {
 	private UserRepository userRepository;		
 	
 	@RequestMapping(method = RequestMethod.GET, value = "")
-	public String provideUploadInfo(Model model) {
+	public String viewDeals(Model model) {
 
+		/*
+        Map<Integer, String> buyers = new HashMap<>();
+        
+        for (User buyer : userRepository.findAllByRole(UserRole.ROLE_BUYER)) {
+        	buyers.put(buyer.getId(), buyer.getEmail());
+        }
+        */
+		
+        List<User> buyers = userRepository.findAllByRole(UserRole.ROLE_BUYER);
+        
+		model.addAttribute("buyers", buyers);  		
+		
 		model.addAttribute("documents", documentRepository.findAllByOrderByUploadedAtDesc());
 
 		return "account_seller";
 	}
 
 	@RequestMapping(method = RequestMethod.POST, value = "")
-	public String handleFileUpload(
+	public String createDeal(
+			@RequestParam("buyer_id") int buyerId,			
 			@RequestParam("description") String description, 
 			@RequestParam("file") MultipartFile file, 
 			RedirectAttributes redirectAttributes
@@ -102,15 +118,15 @@ public class SellerAccount {
 		
 		if (successfulUpload) {
 			
-			User currentUser = (new CurrentUser(userRepository)).getUser();
+			User seller = (new CurrentUser(userRepository)).getUser();
 			
-
+			User buyer = userRepository.findOneById(buyerId);
 			
 			try {
 				
 				List<Document> documents = new ArrayList<>();
 
-				Deal deal = new Deal(description, currentUser, currentUser, documents);				
+				Deal deal = new Deal(description, seller, buyer, documents);				
 				
 				documents.add(new Document(filename, file.getBytes(), deal));
 
