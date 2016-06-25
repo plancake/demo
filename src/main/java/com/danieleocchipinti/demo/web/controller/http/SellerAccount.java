@@ -6,6 +6,7 @@ import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
@@ -26,9 +27,13 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.danieleocchipinti.demo.entity.Deal;
 import com.danieleocchipinti.demo.entity.Document;
+import com.danieleocchipinti.demo.entity.User;
+import com.danieleocchipinti.demo.repository.DealRepository;
 import com.danieleocchipinti.demo.repository.DocumentRepository;
-
+import com.danieleocchipinti.demo.repository.UserRepository;
+import com.danieleocchipinti.demo.lib.CurrentUser;
 import com.danieleocchipinti.demo.lib.Utils;
 
 @Controller("HttpSellerAccount")
@@ -40,7 +45,13 @@ public class SellerAccount {
 	private static final String UPLOADED_FILES_ROOT_DIR = "/var/tmp";
 	
 	@Autowired
+	private DealRepository dealRepository;	
+
+	@Autowired
 	private DocumentRepository documentRepository;	
+	
+	@Autowired
+	private UserRepository userRepository;		
 	
 	@RequestMapping(method = RequestMethod.GET, value = "")
 	public String provideUploadInfo(Model model) {
@@ -51,7 +62,11 @@ public class SellerAccount {
 	}
 
 	@RequestMapping(method = RequestMethod.POST, value = "")
-	public String handleFileUpload(@RequestParam("file") MultipartFile file, RedirectAttributes redirectAttributes) {
+	public String handleFileUpload(
+			@RequestParam("description") String description, 
+			@RequestParam("file") MultipartFile file, 
+			RedirectAttributes redirectAttributes
+	) {
 		
 		String filename = "";
 		
@@ -74,8 +89,6 @@ public class SellerAccount {
 				}
 				
 				successfulUpload = true;
-				redirectAttributes.addFlashAttribute("successMessage",
-						"You successfully uploaded " + filename + "!");
 			}
 			catch (Exception e) {
 				redirectAttributes.addFlashAttribute("errorMessage",
@@ -88,8 +101,24 @@ public class SellerAccount {
 		}
 		
 		if (successfulUpload) {
+			
+			User currentUser = (new CurrentUser(userRepository)).getUser();
+			
+
+			
 			try {
-				documentRepository.save(new Document(filename, file.getBytes()));
+				
+				List<Document> documents = new ArrayList<>();
+
+				Deal deal = new Deal(description, currentUser, currentUser, documents);				
+				
+				documents.add(new Document(filename, file.getBytes(), deal));
+
+				dealRepository.save(deal);
+				
+				redirectAttributes.addFlashAttribute("successMessage",
+						"You successfully created a new deal!");				
+				
 			} catch (IOException e) {
 				e.printStackTrace();
 			}

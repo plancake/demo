@@ -18,14 +18,19 @@ public class Document {
     @Column(nullable = false, columnDefinition="longblob")
     private byte[] content;
 
+	@ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "deal_id", nullable = false)
+    private Deal deal;    
+    
     @Column(nullable = false)    
     private Date uploadedAt = new Date();
 
     protected Document() { }
 
-    public Document(String filename, byte[] content) {
+    public Document(String filename, byte[] content, Deal deal) {
         this.filename = filename;
         this.content = content;
+        this.deal = deal;
     }
 
     public int getId() {
@@ -39,6 +44,10 @@ public class Document {
     public byte[] getContent() {
         return this.content;
     }
+    
+    public Deal getDeal() {
+		return this.deal;
+	}    
     
     public Date getUploadedAt() {
     	return this.uploadedAt;

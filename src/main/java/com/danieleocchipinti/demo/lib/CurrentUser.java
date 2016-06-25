@@ -49,6 +49,11 @@ public class CurrentUser {
 		return this.getRole().equals(UserRole.ROLE_BUYER);
 	}
 	
+	public User getUser()
+	{
+		return this.user;
+	}
+	
 	private UserRole getRole()
 	{
 		return user.getRole();

@@ -14,6 +14,13 @@
 	
 		<div>
 			<form method="POST" enctype="multipart/form-data" th:action="@{/account/seller}">
+
+				<h3>Create a new deal</h3>
+
+				<div class="form-group">
+					<label for="description">Description:</label>
+					<input type="text" name="description" id="description" required="required" />
+				</div>
 			
 				<div class="form-group">
 					<label for="fileToUpload">File to upload:</label>
