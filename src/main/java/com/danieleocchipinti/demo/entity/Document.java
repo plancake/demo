@@ -1,15 +1,15 @@
 package com.danieleocchipinti.demo.entity;
 
-import java.io.Serializable;
 import java.util.Date;
 
 import javax.persistence.*;
 
 @Entity
-public class Document implements Serializable {
+@Table(name = "document")
+public class Document {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
     @Column(nullable = false)
@@ -20,8 +20,6 @@ public class Document implements Serializable {
 
     @Column(nullable = false)    
     private Date uploadedAt = new Date();
-
-    // ... additional members, often include @OneToMany mappings
 
     protected Document() { }
 

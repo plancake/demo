@@ -5,7 +5,9 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -34,14 +36,13 @@ public class Account {
 
         model.addAttribute("name", auth.getName());    	
     	
-    	// logger.info(auth.getPrincipal().toString());
-    	// logger.info(auth.getDetails().toString());
+    	logger.info(auth.getPrincipal().toString());
+    	logger.info(auth.getDetails().toString());
+    	logger.info(auth.getName());    	
     	
-        /*
     	for (GrantedAuthority ga : auth.getAuthorities()) {
     		logger.info(ga.getAuthority()); // ROLE_USER
     	}
-    	*/
     	
         return "account_home";
     }
@@ -54,6 +55,15 @@ public class Account {
 	      
 	      return document.getContent();
 	}
-    
-    
+	
+	/*
+	@RequestMapping(method = RequestMethod.GET, value = "/hashed/{plain_password}")
+	@ResponseBody
+	public String getHashedPassword(@PathVariable("plain_password") String plainPassword) {
+
+		BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+		return passwordEncoder.encode(plainPassword);
+		
+	}
+    */
 }
