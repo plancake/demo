@@ -41,12 +41,12 @@ public class CurrentUser {
 	
 	public boolean isSeller()
 	{
-		return this.getRole().equals(UserRole.SELLER);
+		return this.getRole().equals(UserRole.ROLE_SELLER);
 	}
 
 	public boolean isBuyer()
 	{
-		return this.getRole().equals(UserRole.BUYER);
+		return this.getRole().equals(UserRole.ROLE_BUYER);
 	}
 	
 	private UserRole getRole()

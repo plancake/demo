@@ -1,5 +1,5 @@
 package com.danieleocchipinti.demo.entity;
 
 public enum UserRole {
-    SELLER, BUYER
+    ROLE_SELLER, ROLE_BUYER
 }
