@@ -7,9 +7,12 @@ import org.springframework.stereotype.Repository;
 
 import com.danieleocchipinti.demo.entity.Deal;
 import com.danieleocchipinti.demo.entity.Document;
+import com.danieleocchipinti.demo.entity.User;
 
 @Repository
 public interface DealRepository extends CrudRepository<Deal, Long> {
     
-    Deal findOneById(int id);
+	public Deal findOneById(int id);
+    
+    public List<Deal> findAllBySeller(User seller);
 }

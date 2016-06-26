@@ -44,6 +44,30 @@
 				<input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
 			</form>
 		</div>
+		
+		<hr />
+		
+		<div id="dealsList">
+			<ul>
+				<li th:each="deal : ${deals}">
+					<span th:text="${deal.description}"></span>
+					 - shared with 
+					<span th:text="${deal.buyer.email}"></span>
+					 on
+					<span th:text="${deal.createdAt}"></span>
+										
+					<ul>
+						<li th:each="document : ${deal.documents}" >
+							<a target="_blank" th:href="@{/account/document/{document_id}.pdf(document_id=${document.id})}" th:text="${document.filename}"></a>
+						</li>
+					</ul>					
+					
+				</li>
+			</ul>	
+			
+
+		</div>
+		
     </div>
     
 </html>

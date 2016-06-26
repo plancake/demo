@@ -61,17 +61,13 @@ public class SellerAccount {
 	@RequestMapping(method = RequestMethod.GET, value = "")
 	public String viewDeals(Model model) {
 
-		/*
-        Map<Integer, String> buyers = new HashMap<>();
-        
-        for (User buyer : userRepository.findAllByRole(UserRole.ROLE_BUYER)) {
-        	buyers.put(buyer.getId(), buyer.getEmail());
-        }
-        */
+		List<Deal> deals = dealRepository.findAllBySeller((new CurrentUser(userRepository)).getUser());
 		
         List<User> buyers = userRepository.findAllByRole(UserRole.ROLE_BUYER);
         
 		model.addAttribute("buyers", buyers);  		
+		
+		model.addAttribute("deals", deals); 
 		
 		model.addAttribute("documents", documentRepository.findAllByOrderByUploadedAtDesc());
 
