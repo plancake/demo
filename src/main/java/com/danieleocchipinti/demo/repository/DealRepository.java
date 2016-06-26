@@ -15,4 +15,6 @@ public interface DealRepository extends CrudRepository<Deal, Long> {
 	public Deal findOneById(int id);
     
     public List<Deal> findAllBySeller(User seller);
+
+    public List<Deal> findAllByBuyer(User buyer);
 }

@@ -26,9 +26,14 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.danieleocchipinti.demo.entity.Deal;
 import com.danieleocchipinti.demo.entity.Document;
+import com.danieleocchipinti.demo.entity.User;
+import com.danieleocchipinti.demo.entity.UserRole;
+import com.danieleocchipinti.demo.repository.DealRepository;
 import com.danieleocchipinti.demo.repository.DocumentRepository;
-
+import com.danieleocchipinti.demo.repository.UserRepository;
+import com.danieleocchipinti.demo.lib.CurrentUser;
 import com.danieleocchipinti.demo.lib.Utils;
 
 @Controller("HttpBuyerAccount")
@@ -38,11 +43,18 @@ public class BuyerAccount {
 	private static final Logger logger = Logger.getLogger(BuyerAccount.class);	
 	
 	@Autowired
-	private DocumentRepository documentRepository;	
+	private DealRepository dealRepository;	
+	
+	@Autowired
+	private UserRepository userRepository;	
 	
 	@RequestMapping(method = RequestMethod.GET, value = "")
 	public String buyerHome(Model model) {
 
+		List<Deal> deals = dealRepository.findAllByBuyer((new CurrentUser(userRepository)).getUser()); 		
+		
+		model.addAttribute("deals", deals); 		
+		
 		return "account_buyer";
 	}
 

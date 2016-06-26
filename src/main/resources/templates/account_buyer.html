@@ -5,7 +5,26 @@
 
 
     <div class="content" layout:fragment="content">
-        BUYER HOME
+
+		<div class="dealsList" id="buyerDealsList">
+			<ul>
+				<li th:each="deal : ${deals}">
+					<span th:text="${deal.description}"></span>
+					 - shared by 
+					<span th:text="${deal.seller.email}"></span>
+					 on
+					<span th:text="${#dates.format(deal.createdAt, 'dd/MMM/yyyy HH:mm')}"></span>
+										
+					<ul>
+						<li th:each="document : ${deal.documents}" >
+							<a target="_blank" th:href="@{/account/document/{document_id}.pdf(document_id=${document.id})}" th:text="${document.filename}"></a>
+						</li>
+					</ul>					
+					
+				</li>
+			</ul>
+		</div>
+
     </div>
     
 </html>
