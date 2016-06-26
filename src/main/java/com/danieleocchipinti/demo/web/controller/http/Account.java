@@ -1,9 +1,12 @@
 package com.danieleocchipinti.demo.web.controller.http;
 
+import java.io.IOException;
+
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -16,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.danieleocchipinti.demo.entity.Document;
+import com.danieleocchipinti.demo.entity.User;
 import com.danieleocchipinti.demo.lib.CurrentUser;
 import com.danieleocchipinti.demo.entity.Document;
 import com.danieleocchipinti.demo.repository.DocumentRepository;
@@ -53,9 +57,20 @@ public class Account {
 
 	@RequestMapping(method = RequestMethod.GET, value = "/document/{document_id}.pdf", produces = "application/pdf")
 	@ResponseBody
-	public byte[] getDocument(@PathVariable("document_id") int documentId, HttpServletResponse response) {
+	public byte[] getDocument(@PathVariable("document_id") int documentId, HttpServletResponse response) throws IOException {
 
 	      Document document = documentRepository.findOneById(documentId);
+	      
+	      User loggedinUser = (new CurrentUser(userRepository)).getUser();
+	      
+	      if (
+	    		  !loggedinUser.equals(document.getDeal().getBuyer())
+	    		  &&
+	    		  !loggedinUser.equals(document.getDeal().getSeller())
+	      ) {
+	    	  response.sendError(HttpStatus.UNAUTHORIZED.value());
+	    	  return new byte[] { (byte)0xe0 }; // returning meaningless data, just in case
+	      }
 	      
 	      return document.getContent();
 	}
