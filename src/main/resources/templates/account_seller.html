@@ -54,7 +54,8 @@
 					 - shared with 
 					<span th:text="${deal.buyer.email}"></span>
 					 on
-					<span th:text="${deal.createdAt}"></span>
+					<span th:text="${#dates.format(deal.createdAt, 'dd/MMM/yyyy HH:mm')}"></span>
+					
 										
 					<ul>
 						<li th:each="document : ${deal.documents}" >
