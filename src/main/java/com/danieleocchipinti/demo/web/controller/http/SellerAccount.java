@@ -47,6 +47,8 @@ public class SellerAccount {
 
 	private static final String UPLOADED_FILES_ROOT_DIR = "/var/tmp";
 	
+	private String lastUploadErrorMessage = "";
+	
 	@Autowired
 	private DealRepository dealRepository;	
 
@@ -80,67 +82,78 @@ public class SellerAccount {
 	public String createDeal(
 			@RequestParam("buyer_id") int buyerId,			
 			@RequestParam("description") String description, 
-			@RequestParam("file") MultipartFile file, 
+			@RequestParam("file") MultipartFile file,
+			@RequestParam("file2") MultipartFile file2,
+			@RequestParam("file3") MultipartFile file3,			
 			RedirectAttributes redirectAttributes
 	) {
 		
-		String filename = "";
+		List<MultipartFile> files = new ArrayList<>();
+		if (!file.isEmpty()) files.add(file);
+		if (!file2.isEmpty()) files.add(file2);
+		if (!file3.isEmpty()) files.add(file3);		
 		
-		boolean successfulUpload = false;
-
-		if (!file.isEmpty()) {
-			
-			filename = file.getOriginalFilename();
-
-			if (filename.contains("/")) {
-				redirectAttributes.addFlashAttribute("errorMessage", "Folder separators not allowed");
-				return "redirect:/account/seller";
-			}			
-			
-			try {
-				
-				if (!Utils.is_pdf(file.getBytes())) {
-					redirectAttributes.addFlashAttribute("errorMessage", "Only PDF files are accepted.");
-					return "redirect:/account/seller";					
-				}
-				
-				successfulUpload = true;
-			}
-			catch (Exception e) {
-				redirectAttributes.addFlashAttribute("errorMessage",
-						"You failed to upload " + filename + " => " + e.getMessage());
+		for (MultipartFile f : files) {
+			if (!isFileValid(f)) {
+				redirectAttributes.addFlashAttribute("errorMessage", lastUploadErrorMessage);
+				return "redirect:/account/seller";				
 			}
 		}
-		else {
-			redirectAttributes.addFlashAttribute("errorMessage",
-					"You failed to upload " + filename + " because the file was empty");
-		}
 		
-		if (successfulUpload) {
+		// everything is OK!
+		
+		User seller = (new CurrentUser(userRepository)).getUser();
+		
+		User buyer = userRepository.findOneById(buyerId);
+		
+		try {
 			
-			User seller = (new CurrentUser(userRepository)).getUser();
-			
-			User buyer = userRepository.findOneById(buyerId);
-			
-			try {
-				
-				List<Document> documents = new ArrayList<>();
+			List<Document> documents = new ArrayList<>();
 
-				Deal deal = new Deal(description, seller, buyer, documents);				
-				
-				documents.add(new Document(filename, file.getBytes(), deal));
-
-				dealRepository.save(deal);
-				
-				redirectAttributes.addFlashAttribute("successMessage",
-						"You successfully created a new deal!");				
-				
-			} catch (IOException e) {
-				e.printStackTrace();
+			Deal deal = new Deal(description, seller, buyer, documents);				
+			
+			for (MultipartFile f : files) {
+				documents.add(new Document(f.getOriginalFilename(), f.getBytes(), deal));
 			}
+
+			dealRepository.save(deal);
+			
+			redirectAttributes.addFlashAttribute("successMessage",
+					"You successfully created a new deal!");				
+			
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
 
 		return "redirect:/account/seller";
+	}
+	
+	private boolean isFileValid (MultipartFile file)
+	{
+		String errorMessage = "";
+		
+		String filename = "";
+			
+		filename = file.getOriginalFilename();
+
+		if (filename.contains("/")) {
+			errorMessage = "Folder separators not allowed";
+		}			
+		
+		try {
+			
+			if (!Utils.is_pdf(file.getBytes())) {
+				errorMessage = "Only PDF files are accepted.";		
+			}
+		}
+		catch (Exception e) {
+			errorMessage = "You failed to upload " + filename + " => " + e.getMessage();
+		}
+
+		lastUploadErrorMessage = errorMessage;
+		
+		return (errorMessage.length() == 0);
+		
 	}
 
 }
