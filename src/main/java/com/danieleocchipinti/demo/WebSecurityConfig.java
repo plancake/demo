@@ -38,7 +38,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             .logout()
                 .permitAll()
                 .and()
-            .httpBasic().disable();                
+            .httpBasic().disable();
+        
+        http.headers().frameOptions().disable();
     }
 
     @Autowired

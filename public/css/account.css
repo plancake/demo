@@ -34,3 +34,40 @@
 {
 	padding-left: 15px;
 }
+
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #000;
+    filter:alpha(opacity=50);
+    -moz-opacity:0.5;
+    -khtml-opacity: 0.5;
+    opacity: 0.5;
+    z-index: 10000;
+}
+
+.overlayClose
+{
+	width: 90%;
+	margin: 5px auto;
+	text-align: center;	
+}
+
+.overlayContent
+{
+    position: fixed;
+    top: 50px;
+    width: 90%;
+    height: 90%;
+    margin 100px auto;	
+    z-index: 10001;	
+}
+
+.overlayContent iframe
+{
+	width: 100%;
+	height: 100%;	
+}

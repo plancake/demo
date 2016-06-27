@@ -30,17 +30,15 @@
 			
 		</div>
 
-		<div id="dialog2" style="display:none">
-		    <div>
-		    <iframe src="yourpdffile.pdf"></iframe>
-		    </div>
+		<div class="overlay" style="display:none">
+			<div class="overlayClose">
+				<a href=".#" class="btn btn-default">close</a>
+			</div>
 		</div>     
-    
-		<div id="dialog" style="display:none">
-		    <object data="http://localhost/account/document/4.pdf" type="application/pdf" width="300" height="200">
-		        alt : <a href="http://localhost/account/document/4.pdf">http://localhost/account/document/4.pdf</a>
-		    </object>
-		</div>
+
+	    <div class="overlayContent" id="documentOverlayContent" style="display:none">
+	    	<iframe src=""></iframe>
+	    </div>
 
     </div>    
     
