@@ -20,6 +20,7 @@
 					<td>
 						<ul class="documentsList">
 							<li th:each="document : ${deal.documents}" >
+								<span class="hide documentId" th:text="${document.id}"></span>
 								<a target="_blank" th:href="@{/account/document/{document_id}.pdf(document_id=${document.id})}" th:text="${document.filename}"></a>
 							</li>
 						</ul>					

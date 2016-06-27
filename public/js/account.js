@@ -1,9 +1,12 @@
 $( document ).ready(function() {
 	
+	var currentDocumentId = 0;
 	var currentDocumentViewId = 0;
 	
-	function openDocument(documentUrl)
+	function openDocument(documentId, documentUrl)
 	{
+		currentDocumentId = documentId;
+		
 		$("#documentOverlayContent iframe").attr('src', documentUrl);
 		
 		$("#documentOverlayContent").show();		
@@ -11,7 +14,7 @@ $( document ).ready(function() {
 		
 		$.ajax({
 			  type: "POST",
-			  url: '/account/document-views/' + 10 + '?mode=start&view_id=0',
+			  url: '/account/document-views/' + documentId + '?mode=start&view_id=0',
 			  success: function(documentViewId) {
 				  currentDocumentViewId = documentViewId;
 			  }
@@ -25,9 +28,10 @@ $( document ).ready(function() {
 		
 		$.ajax({
 			  type: "POST",
-			  url: '/account/document-views/' + 10 + '?mode=end&view_id=' + currentDocumentViewId,
+			  url: '/account/document-views/' + currentDocumentId + '?mode=end&view_id=' + currentDocumentViewId,
 			  success: function(documentViewId) {
 				  currentDocumentViewId = 0;
+				  currentDocumentId = 0;
 			  }
 		});		
 	}	
@@ -36,7 +40,7 @@ $( document ).ready(function() {
 		
 		$('#buyerDealsList a').click(function (e) {
 			
-			openDocument($(this).attr('href'));
+			openDocument(parseInt($(this).parent().find('.documentId').text(), 10), $(this).attr('href'));
 
 			e.preventDefault();
 			return false;
