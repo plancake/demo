@@ -1,0 +1,21 @@
+These are potential improvements, which I would work on if this was to go into production.
+
+[Technical todos]
+- minify assets
+- versioning assets
+- improve error notifications - eg send emails on error
+- hardened the security when they create a new deal, with better input filtering
+- create a proper RESTful API for the backend and use Angular.js/React for frontend
+- in the db use uuid rather than id, to be ready for multiserver setting
+- being able to inject the userRepository to the CurrentUser class
+
+[Functionalities todos]
+- registration of new users
+- customise error pages
+- seller to be able to sort/filter list of deals (e.g. by buyer)
+- realtime updates on the stats (via Websockets / Socket.io)
+- allow also .doc to be uploaded
+- being able to attach a note to a deal
+- detect if the browser doesn't have PDF reader, and use some other way to display the PDF
+- allow user to have multiple roles (both seller and buyer, on different deals)
+- progress bar for uploading document? (Maybe not as they tend to be small files anyway)
