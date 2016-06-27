@@ -8,23 +8,25 @@
 
 		<div class="listOfDeals" id="buyerListOfDeals">
 		
-			<h2>Live deals created for you</h2>
-		
-			<ul class="dealsList">
-				<li th:each="deal : ${deals}">
-					<span th:text="${deal.description}"></span>
-					 - shared by 
-					<span th:text="${deal.seller.email}"></span>
-					 on
-					<span th:text="${#dates.format(deal.createdAt, 'dd/MMM/yyyy HH:mm')}"></span>
-										
-					<ul class="documentsList">
-						<li th:each="document : ${deal.documents}" >
-							<a target="_blank" th:href="@{/account/document/{document_id}.pdf(document_id=${document.id})}" th:text="${document.filename}"></a>
-						</li>
-					</ul>				
-				</li>
-			</ul>
+			<h2>Deals created for you</h2>
+			
+			<table class="dealsList table table-hover" id="buyerDealsList">
+				<tr><th>description</th><th>client</th><th>creation date</th><th>documents</th></tr>
+			
+				<tr th:each="deal : ${deals}">
+					<td th:text="${deal.description}"></td>
+					<td th:text="${deal.seller.email}"></td>
+					<td th:text="${#dates.format(deal.createdAt, 'dd/MMM/yyyy HH:mm')}"></td>
+					<td>
+						<ul class="documentsList">
+							<li th:each="document : ${deal.documents}" >
+								<a target="_blank" th:href="@{/account/document/{document_id}.pdf(document_id=${document.id})}" th:text="${document.filename}"></a>
+							</li>
+						</ul>					
+					</td>
+				</tr>
+
+			</table>			
 			
 		</div>
 

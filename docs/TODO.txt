@@ -9,6 +9,7 @@ These are potential improvements, which I would work on if this was to go into p
 - create a proper RESTful API for the backend and use Angular.js/React for frontend
 - in the db use uuid rather than id, to be ready for multiserver setting
 - being able to inject the userRepository to the CurrentUser class
+- the templating for the list of deals is almost the same for buyers and sellers. Rather than duplicating it, I should create a "partial" to include in both cases.
 
 [Functionalities todos]
 - registration of new users
