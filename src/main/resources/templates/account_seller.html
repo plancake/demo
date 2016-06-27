@@ -63,8 +63,10 @@
 					<td th:text="${#dates.format(deal.createdAt, 'dd/MMM/yyyy HH:mm')}"></td>
 					<td>
 						<ul class="documentsList">
-							<li th:each="document : ${deal.documents}" >
+							<li th:each="document : ${deal.documents}" th:class="'document_' + ${document.id}" >
 								<a target="_blank" th:href="@{/account/document/{document_id}.pdf(document_id=${document.id})}" th:text="${document.filename}"></a>
+								<ul class="documentViewsLog">
+								</ul>
 							</li>
 						</ul>					
 					</td>

@@ -1,5 +1,9 @@
 package com.danieleocchipinti.demo.web.controller.rest;
 
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
 import org.apache.catalina.servlet4preview.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -8,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.danieleocchipinti.demo.entity.Document;
 import com.danieleocchipinti.demo.entity.DocumentView;
 import com.danieleocchipinti.demo.repository.DealRepository;
 import com.danieleocchipinti.demo.repository.DocumentRepository;
@@ -46,8 +51,18 @@ public class DocumentViews {
     	return documentView.getId();
     }	
 	
-    @RequestMapping(value="/{userId}", method=RequestMethod.GET)
-    public Object getUser(@PathVariable Long userId) {
-        return new Object(){ public String firstName = "Firstname"; };
+    @RequestMapping(value="/{documentId}", method=RequestMethod.GET)
+    public List<Date[]> getUser(@PathVariable int documentId) {
+    	
+    	List<Date[]> views = new ArrayList<>();
+    	
+    	List<DocumentView> documentViews = documentViewRepository.findAllByDocument(documentRepository.findOneById(documentId));
+    	
+    	for (DocumentView documentView : documentViews) {
+    		views.add(new Date[] { documentView.getViewedAt(), documentView.getViewedTill() });
+    	}
+    	
+    	return views;
+    	
     }
 }
