@@ -6,8 +6,11 @@
 
     <div class="content" layout:fragment="content">
 
-		<div class="dealsList" id="buyerDealsList">
-			<ul>
+		<div class="listOfDeals" id="buyerListOfDeals">
+		
+			<h2>Live deals created for you</h2>
+		
+			<ul class="dealsList">
 				<li th:each="deal : ${deals}">
 					<span th:text="${deal.description}"></span>
 					 - shared by 
@@ -15,17 +18,29 @@
 					 on
 					<span th:text="${#dates.format(deal.createdAt, 'dd/MMM/yyyy HH:mm')}"></span>
 										
-					<ul>
+					<ul class="documentsList">
 						<li th:each="document : ${deal.documents}" >
 							<a target="_blank" th:href="@{/account/document/{document_id}.pdf(document_id=${document.id})}" th:text="${document.filename}"></a>
 						</li>
-					</ul>					
-					
+					</ul>				
 				</li>
 			</ul>
+			
 		</div>
 
-    </div>
+		<div id="dialog2" style="display:none">
+		    <div>
+		    <iframe src="yourpdffile.pdf"></iframe>
+		    </div>
+		</div>     
+    
+		<div id="dialog" style="display:none">
+		    <object data="http://localhost/account/document/4.pdf" type="application/pdf" width="300" height="200">
+		        alt : <a href="http://localhost/account/document/4.pdf">http://localhost/account/document/4.pdf</a>
+		    </object>
+		</div>
+
+    </div>    
     
 </html>
       
