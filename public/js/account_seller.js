@@ -1,7 +1,8 @@
 $( document ).ready(function() {
 	
-	// Using moment.js would be nicer, but I had some problems with it
-	// See http://stackoverflow.com/questions/847185/convert-a-unix-timestamp-to-time-in-javascript
+	// From Unix timestamp (in seconds) to formatted date and time
+	// See http://stackoverflow.com/questions/847185/convert-a-unix-timestamp-to-time-in-javascript	
+	// Using moment.js would be nicer, but I had some problems with it.
 	function timeConverter(UNIX_timestamp){
 		  var a = new Date(UNIX_timestamp * 1000);
 		  var months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
@@ -30,15 +31,15 @@ $( document ).ready(function() {
 					$.ajax({
 						  type: "GET",
 						  url: '/account/document-views/' + documentId,
-						  success: function(data) {
+						  success: function(viewsDataFromServer) {
 							  var $views = $('li.document_' + documentId + ' ul.documentViewsLog');
 							  
-							  $views.empty();
+							  $views.empty(); // reset the list of views
 
 							  
-							  for (var i = 0; i < data.length; i++) {
+							  for (var i = 0; i < viewsDataFromServer.length; i++) {
 
-								  var viewRecord = data[i];
+								  var viewRecord = viewsDataFromServer[i];
 								  
 								  var viewedAt = viewRecord[0] / 1000; // server sends milliseconds
 								  var viewedTill = viewRecord[1] / 1000; // server sends milliseconds								  
