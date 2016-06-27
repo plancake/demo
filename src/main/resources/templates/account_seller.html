@@ -28,7 +28,7 @@
 					<label for="buyer_id">Customer/Buyer:</label>
 					
 				    <select class="form-control" name="buyer_id" id="buyer_id" required="required">
-					    <option disabled="disabled" selected="selected" value="">select buyer</option>
+					    <option disabled="disabled" selected="selected" value=""></option>
 					    <option th:each="buyer : ${buyers}" th:value="${buyer.id}" th:text="${buyer.email}"></option>
 				    </select>					
 				
