@@ -3,6 +3,7 @@ These are potential improvements, which I would work on if this was to go into p
 [Technical todos]
 - minify assets
 - versioning assets
+- use LESS/SASS
 - improve error notifications - eg send emails on error
 - hardened the security when they create a new deal, with better input filtering
 - create a proper RESTful API for the backend and use Angular.js/React for frontend

@@ -1,0 +1,31 @@
+.header
+{
+	margin-bottom: 60px;
+}
+
+.header #logoutAction, .header #loggedInAs
+{
+	float: right;
+}
+
+.header #loggedInAs
+{
+	margin-top: 7px;
+	margin-right: 20px;
+}
+
+#createDealForm label
+{
+	font-weight: normal;
+}
+
+#createDealForm input#description, #createDealForm select#buyer_id
+{
+	width: 330px;
+}
+
+
+#createDealForm  div#dealFilesFormEl input 
+{
+	margin-bottom: 10px;
+}
