@@ -57,5 +57,4 @@ public class BuyerAccount {
 		
 		return "account_buyer";
 	}
-
 }

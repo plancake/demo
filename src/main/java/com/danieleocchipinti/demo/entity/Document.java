@@ -1,6 +1,7 @@
 package com.danieleocchipinti.demo.entity;
 
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.*;
 
@@ -21,10 +22,13 @@ public class Document {
 	@ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "deal_id", nullable = false)
     private Deal deal;    
-    
+
+    @OneToMany(cascade = CascadeType.ALL,mappedBy = "document",fetch = FetchType.LAZY)
+    private List<DocumentView> documentViews;	
+	
     @Column(nullable = false)    
     private Date uploadedAt = new Date();
-
+    
     protected Document() { }
 
     public Document(String filename, byte[] content, Deal deal) {
@@ -47,6 +51,10 @@ public class Document {
     
     public Deal getDeal() {
 		return this.deal;
+	}    
+    
+	public List<DocumentView> getDocumentViews() {
+		return documentViews;
 	}    
     
     public Date getUploadedAt() {

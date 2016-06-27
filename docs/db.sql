@@ -22,6 +22,16 @@ CREATE TABLE `document` (
   CONSTRAINT `FKtehkadngi0m6x1d07budtysua` FOREIGN KEY (`deal_id`) REFERENCES `deal` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
+CREATE TABLE `document_view` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `viewed_at` datetime NOT NULL,
+  `viewed_till` datetime DEFAULT NULL,
+  `document_id` int(11) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `FKs9350fbqlhvmyc4rob5v01o5n` (`document_id`),
+  CONSTRAINT `FKs9350fbqlhvmyc4rob5v01o5n` FOREIGN KEY (`document_id`) REFERENCES `document` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
 CREATE TABLE `user` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `email` varchar(255) COLLATE utf8_unicode_ci NOT NULL,

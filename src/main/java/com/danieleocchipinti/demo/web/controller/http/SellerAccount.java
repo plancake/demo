@@ -43,9 +43,7 @@ import com.danieleocchipinti.demo.lib.Utils;
 @RequestMapping(value="/account/seller")
 public class SellerAccount {
 	
-	private static final Logger logger = Logger.getLogger(SellerAccount.class);	
-
-	private static final String UPLOADED_FILES_ROOT_DIR = "/var/tmp";
+	private static final Logger logger = Logger.getLogger(SellerAccount.class);
 	
 	private String lastUploadErrorMessage = "";
 	

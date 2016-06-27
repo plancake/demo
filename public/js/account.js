@@ -1,17 +1,35 @@
 $( document ).ready(function() {
 	
+	var currentDocumentViewId = 0;
+	
 	function openDocument(documentUrl)
 	{
 		$("#documentOverlayContent iframe").attr('src', documentUrl);
 		
 		$("#documentOverlayContent").show();		
 		$(".overlay").show();
+		
+		$.ajax({
+			  type: "POST",
+			  url: '/account/document-views/' + 10 + '?mode=start&view_id=0',
+			  success: function(documentViewId) {
+				  currentDocumentViewId = documentViewId;
+			  }
+		});
 	}
 
 	function closeDocument()
 	{
 		$("#documentOverlayContent").hide();		
 		$(".overlay").hide();
+		
+		$.ajax({
+			  type: "POST",
+			  url: '/account/document-views/' + 10 + '?mode=end&view_id=' + currentDocumentViewId,
+			  success: function(documentViewId) {
+				  currentDocumentViewId = 0;
+			  }
+		});		
 	}	
 	
 	if ($('#buyerDealsList').length) {
