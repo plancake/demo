@@ -1,3 +1,14 @@
+CREATE TABLE `user` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `email` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `password_hash` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `role` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `UK_ob8kqyqqgmefl0aco34akdtpe` (`email`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+INSERT INTO `user` VALUES (1,'seller1@mycompany.com','$2a$10$yypw8MFZmqnsd3u75JB4TueFVI/fS7vVwv5KOeOB31d1/3mTxC1Ye','ROLE_SELLER'),(2,'buyer1@mycompany.com','$2a$10$yypw8MFZmqnsd3u75JB4TueFVI/fS7vVwv5KOeOB31d1/3mTxC1Ye','ROLE_BUYER'),(3,'buyer2@mycompany.com','$2a$10$yypw8MFZmqnsd3u75JB4TueFVI/fS7vVwv5KOeOB31d1/3mTxC1Ye','ROLE_BUYER'),(4,'seller2@mycompany.com','$2a$10$yypw8MFZmqnsd3u75JB4TueFVI/fS7vVwv5KOeOB31d1/3mTxC1Ye','ROLE_SELLER');
+
 CREATE TABLE `deal` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `created_at` datetime NOT NULL,
@@ -32,13 +43,3 @@ CREATE TABLE `document_view` (
   CONSTRAINT `FKs9350fbqlhvmyc4rob5v01o5n` FOREIGN KEY (`document_id`) REFERENCES `document` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
-CREATE TABLE `user` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `email` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  `password_hash` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  `role` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `UK_ob8kqyqqgmefl0aco34akdtpe` (`email`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-
-INSERT INTO `user` VALUES (1,'seller1@mycompany.com','$2a$10$yypw8MFZmqnsd3u75JB4TueFVI/fS7vVwv5KOeOB31d1/3mTxC1Ye','ROLE_SELLER'),(2,'buyer1@mycompany.com','$2a$10$yypw8MFZmqnsd3u75JB4TueFVI/fS7vVwv5KOeOB31d1/3mTxC1Ye','ROLE_BUYER'),(3,'buyer2@mycompany.com','$2a$10$yypw8MFZmqnsd3u75JB4TueFVI/fS7vVwv5KOeOB31d1/3mTxC1Ye','ROLE_BUYER'),(4,'seller2@mycompany.com','$2a$10$yypw8MFZmqnsd3u75JB4TueFVI/fS7vVwv5KOeOB31d1/3mTxC1Ye','ROLE_SELLER');
