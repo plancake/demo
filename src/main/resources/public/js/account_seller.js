@@ -36,6 +36,7 @@ $( document ).ready(function() {
 							  
 							  $views.empty(); // reset the list of views
 
+							  var viewMessage = "";
 							  
 							  for (var i = 0; i < viewsDataFromServer.length; i++) {
 
@@ -44,7 +45,7 @@ $( document ).ready(function() {
 								  var viewedAt = viewRecord[0] / 1000; // server sends milliseconds
 								  var viewedTill = viewRecord[1] / 1000; // server sends milliseconds								  
 								  
-								  var viewMessage = "viewed on " + timeConverter(viewedAt);
+								  viewMessage = "viewed on " + timeConverter(viewedAt);
 								  
 								  if (viewedTill) {
 									  viewMessage += " for " + (viewedTill - viewedAt) + " seconds";
@@ -54,6 +55,11 @@ $( document ).ready(function() {
 								  
 								  $views.append("<li>" + viewMessage + "</li>");
 							  }
+							  
+							  if (viewMessage == "") {
+								  $views.append("<li>no views so far</li>");
+							  } 
+							  
 						  }
 					});
 				})(documentId);
